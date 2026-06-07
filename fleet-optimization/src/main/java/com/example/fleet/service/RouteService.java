@@ -10,4 +10,7 @@ public interface RouteService {
 
     // Get all routes
     List<RouteDto> getAllRoutes();
+    
+    // Get route by ID
+    RouteDto getRouteById(Long id);
 }

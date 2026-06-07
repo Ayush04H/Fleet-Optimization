@@ -9,6 +9,8 @@ import com.example.fleet.entity.Assignment;
 import com.example.fleet.entity.Route;
 import com.example.fleet.entity.User;
 import com.example.fleet.entity.Vehicle;
+import com.example.fleet.exception.BusinessConstraintViolationException;
+import com.example.fleet.exception.ResourceNotFoundException;
 import com.example.fleet.repository.AssignmentRepository;
 import com.example.fleet.repository.RouteRepository;
 import com.example.fleet.repository.UserRepository;
@@ -42,28 +44,28 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Transactional
     public AssignmentDto createAssignment(CreateAssignmentRequest request) {
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + request.getUserId()));
         
         if (assignmentRepository.existsByUserIdAndDate(user.getId(), request.getDate())) {
-            throw new RuntimeException("Driver is already assigned to a route on this date.");
+            throw new BusinessConstraintViolationException("Driver is already assigned to a route on this date.");
         }
         
         Vehicle vehicle = vehicleRepository.findById(request.getVehicleId())
-                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Vehicle not found with ID: " + request.getVehicleId()));
         
         Route route = routeRepository.findById(request.getRouteId())
-                .orElseThrow(() -> new RuntimeException("Route not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Route not found with ID: " + request.getRouteId()));
 
         if ("MAINTENANCE_REQUIRED".equals(vehicle.getStatus())) {
-            throw new RuntimeException("Vehicle requires maintenance and cannot be dispatched");
+            throw new BusinessConstraintViolationException("Vehicle requires maintenance and cannot be dispatched.");
         }
         if (!"IDLE".equals(vehicle.getStatus())) {
-            throw new RuntimeException("Vehicle is not available");
+            throw new BusinessConstraintViolationException("Vehicle is not available. Current status: " + vehicle.getStatus());
         }
 
         if (route.getRequiredCapacity() != null && vehicle.getCapacity() != null) {
             if (route.getRequiredCapacity() > vehicle.getCapacity()) {
-                throw new RuntimeException("Vehicle capacity is insufficient for this route's cargo load.");
+                throw new BusinessConstraintViolationException("Vehicle capacity is insufficient for this route's cargo load.");
             }
         }
 
@@ -108,7 +110,7 @@ public class AssignmentServiceImpl implements AssignmentService {
     @Transactional
     public AssignmentDto completeAssignment(Long id) {
         Assignment assignment = assignmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Assignment not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Assignment not found with ID: " + id));
 
         // Free up the vehicle, increment mileage, and calculate profitability
         Vehicle vehicle = assignment.getVehicle();

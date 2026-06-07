@@ -2,6 +2,7 @@ package com.example.fleet.service.impl;
 
 import com.example.fleet.dto.RouteDto;
 import com.example.fleet.entity.Route;
+import com.example.fleet.exception.ResourceNotFoundException;
 import com.example.fleet.repository.RouteRepository;
 import com.example.fleet.service.RouteService;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,13 @@ public class RouteServiceImpl implements RouteService {
 
         Route savedRoute = routeRepository.save(route);
         return mapToDto(savedRoute);
+    }
+
+    @Override
+    public RouteDto getRouteById(Long id) {
+        Route route = routeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Route not found with ID: " + id));
+        return mapToDto(route);
     }
 
     @Override

@@ -10,4 +10,7 @@ public interface UserService {
 
     // Get all users
     List<UserDto> getAllUsers();
+    
+    // Get user by ID
+    UserDto getUserById(Long id);
 }

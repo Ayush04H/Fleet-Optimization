@@ -2,6 +2,7 @@ package com.example.fleet.service.impl;
 
 import com.example.fleet.dto.UserDto;
 import com.example.fleet.entity.User;
+import com.example.fleet.exception.ResourceNotFoundException;
 import com.example.fleet.repository.UserRepository;
 import com.example.fleet.service.UserService;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,13 @@ public class UserServiceImpl implements UserService {
         
         User savedUser = userRepository.save(user);
         return mapToDto(savedUser);
+    }
+
+    @Override
+    public UserDto getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
+        return mapToDto(user);
     }
 
     @Override
