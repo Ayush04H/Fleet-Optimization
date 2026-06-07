@@ -17,16 +17,19 @@ public class Vehicle {
     private String registrationNumber;
 
     private Double capacity;
-
-    private String status; // e.g., IDLE, ACTIVE, MAINTENANCE
+    private String status;
+    private Double currentMileage = 0.0;
+    private Double maintenanceThreshold = 10000.0;
 
     public Vehicle() {}
 
-    public Vehicle(Long id, String registrationNumber, Double capacity, String status) {
+    public Vehicle(Long id, String registrationNumber, Double capacity, String status, Double currentMileage, Double maintenanceThreshold) {
         this.id = id;
         this.registrationNumber = registrationNumber;
         this.capacity = capacity;
         this.status = status;
+        this.currentMileage = currentMileage != null ? currentMileage : 0.0;
+        this.maintenanceThreshold = maintenanceThreshold != null ? maintenanceThreshold : 10000.0;
     }
 
     public Long getId() { return id; }
@@ -40,4 +43,10 @@ public class Vehicle {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public Double getCurrentMileage() { return currentMileage; }
+    public void setCurrentMileage(Double currentMileage) { this.currentMileage = currentMileage; }
+
+    public Double getMaintenanceThreshold() { return maintenanceThreshold; }
+    public void setMaintenanceThreshold(Double maintenanceThreshold) { this.maintenanceThreshold = maintenanceThreshold; }
 }

@@ -24,6 +24,8 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setRegistrationNumber(vehicleDto.getRegistrationNumber());
         vehicle.setCapacity(vehicleDto.getCapacity());
         vehicle.setStatus("IDLE"); // Default status
+        vehicle.setCurrentMileage(0.0);
+        vehicle.setMaintenanceThreshold(vehicleDto.getMaintenanceThreshold() != null ? vehicleDto.getMaintenanceThreshold() : 10000.0);
 
         Vehicle savedVehicle = vehicleRepository.save(vehicle);
         return mapToDto(savedVehicle);
@@ -45,12 +47,24 @@ public class VehicleServiceImpl implements VehicleService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public VehicleDto performMaintenance(Long vehicleId) {
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+        vehicle.setCurrentMileage(0.0);
+        vehicle.setStatus("IDLE");
+        Vehicle savedVehicle = vehicleRepository.save(vehicle);
+        return mapToDto(savedVehicle);
+    }
+
     private VehicleDto mapToDto(Vehicle vehicle) {
         VehicleDto dto = new VehicleDto();
         dto.setId(vehicle.getId());
         dto.setRegistrationNumber(vehicle.getRegistrationNumber());
         dto.setCapacity(vehicle.getCapacity());
         dto.setStatus(vehicle.getStatus());
+        dto.setCurrentMileage(vehicle.getCurrentMileage());
+        dto.setMaintenanceThreshold(vehicle.getMaintenanceThreshold());
         return dto;
     }
 }

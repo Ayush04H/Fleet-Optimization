@@ -47,6 +47,9 @@ public class AssignmentServiceImpl implements AssignmentService {
         Route route = routeRepository.findById(request.getRouteId())
                 .orElseThrow(() -> new RuntimeException("Route not found"));
 
+        if ("MAINTENANCE_REQUIRED".equals(vehicle.getStatus())) {
+            throw new RuntimeException("Vehicle requires maintenance and cannot be dispatched");
+        }
         if (!"IDLE".equals(vehicle.getStatus())) {
             throw new RuntimeException("Vehicle is not available");
         }
@@ -88,9 +91,16 @@ public class AssignmentServiceImpl implements AssignmentService {
         Assignment assignment = assignmentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Assignment not found"));
 
-        // Free up the vehicle
+        // Free up the vehicle and increment mileage
         Vehicle vehicle = assignment.getVehicle();
-        vehicle.setStatus("IDLE");
+        Double newMileage = vehicle.getCurrentMileage() + assignment.getRoute().getDistanceKm();
+        vehicle.setCurrentMileage(newMileage);
+
+        if (newMileage >= vehicle.getMaintenanceThreshold()) {
+            vehicle.setStatus("MAINTENANCE_REQUIRED");
+        } else {
+            vehicle.setStatus("IDLE");
+        }
         vehicleRepository.save(vehicle);
 
         assignment.setStatus("COMPLETED");
@@ -110,6 +120,8 @@ public class AssignmentServiceImpl implements AssignmentService {
         vehicleDto.setRegistrationNumber(assignment.getVehicle().getRegistrationNumber());
         vehicleDto.setCapacity(assignment.getVehicle().getCapacity());
         vehicleDto.setStatus(assignment.getVehicle().getStatus());
+        vehicleDto.setCurrentMileage(assignment.getVehicle().getCurrentMileage());
+        vehicleDto.setMaintenanceThreshold(assignment.getVehicle().getMaintenanceThreshold());
 
         RouteDto routeDto = new RouteDto();
         routeDto.setId(assignment.getRoute().getId());

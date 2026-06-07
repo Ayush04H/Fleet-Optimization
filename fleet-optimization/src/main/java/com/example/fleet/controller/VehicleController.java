@@ -4,7 +4,9 @@ import com.example.fleet.dto.VehicleDto;
 import com.example.fleet.service.VehicleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,5 +36,10 @@ public class VehicleController {
     @GetMapping("/available")
     public ResponseEntity<List<VehicleDto>> getAvailableVehicles() {
         return ResponseEntity.ok(vehicleService.getAvailableVehicles());
+    }
+
+    @PutMapping("/{id}/maintenance")
+    public ResponseEntity<VehicleDto> performMaintenance(@PathVariable Long id) {
+        return ResponseEntity.ok(vehicleService.performMaintenance(id));
     }
 }

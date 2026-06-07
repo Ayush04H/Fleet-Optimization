@@ -11,6 +11,6 @@ public interface VehicleService {
     // Get all vehicles
     List<VehicleDto> getAllVehicles();
 
-    // Get available (IDLE) vehicles
     List<VehicleDto> getAvailableVehicles();
+    VehicleDto performMaintenance(Long vehicleId);
 }

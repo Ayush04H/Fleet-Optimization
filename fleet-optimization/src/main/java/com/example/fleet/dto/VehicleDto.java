@@ -5,14 +5,18 @@ public class VehicleDto {
     private String registrationNumber;
     private Double capacity;
     private String status;
+    private Double currentMileage;
+    private Double maintenanceThreshold;
 
     public VehicleDto() {}
 
-    public VehicleDto(Long id, String registrationNumber, Double capacity, String status) {
+    public VehicleDto(Long id, String registrationNumber, Double capacity, String status, Double currentMileage, Double maintenanceThreshold) {
         this.id = id;
         this.registrationNumber = registrationNumber;
         this.capacity = capacity;
         this.status = status;
+        this.currentMileage = currentMileage;
+        this.maintenanceThreshold = maintenanceThreshold;
     }
 
     public Long getId() { return id; }
@@ -26,4 +30,10 @@ public class VehicleDto {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public Double getCurrentMileage() { return currentMileage; }
+    public void setCurrentMileage(Double currentMileage) { this.currentMileage = currentMileage; }
+
+    public Double getMaintenanceThreshold() { return maintenanceThreshold; }
+    public void setMaintenanceThreshold(Double maintenanceThreshold) { this.maintenanceThreshold = maintenanceThreshold; }
 }
