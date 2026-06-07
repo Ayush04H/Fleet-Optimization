@@ -15,18 +15,18 @@ public class Route {
     private Long id;
 
     private String startLocation;
-
     private String endLocation;
-
     private Double distanceKm;
+    private Double requiredCapacity;
 
     public Route() {}
 
-    public Route(Long id, String startLocation, String endLocation, Double distanceKm) {
+    public Route(Long id, String startLocation, String endLocation, Double distanceKm, Double requiredCapacity) {
         this.id = id;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.distanceKm = distanceKm;
+        this.requiredCapacity = requiredCapacity != null ? requiredCapacity : 0.0;
     }
 
     public Long getId() { return id; }
@@ -40,4 +40,7 @@ public class Route {
 
     public Double getDistanceKm() { return distanceKm; }
     public void setDistanceKm(Double distanceKm) { this.distanceKm = distanceKm; }
+
+    public Double getRequiredCapacity() { return requiredCapacity; }
+    public void setRequiredCapacity(Double requiredCapacity) { this.requiredCapacity = requiredCapacity; }
 }

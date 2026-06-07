@@ -24,6 +24,7 @@ public class RouteServiceImpl implements RouteService {
         route.setStartLocation(routeDto.getStartLocation());
         route.setEndLocation(routeDto.getEndLocation());
         route.setDistanceKm(routeDto.getDistanceKm());
+        route.setRequiredCapacity(routeDto.getRequiredCapacity());
 
         Route savedRoute = routeRepository.save(route);
         return mapToDto(savedRoute);
@@ -43,6 +44,7 @@ public class RouteServiceImpl implements RouteService {
         dto.setStartLocation(route.getStartLocation());
         dto.setEndLocation(route.getEndLocation());
         dto.setDistanceKm(route.getDistanceKm());
+        dto.setRequiredCapacity(route.getRequiredCapacity());
         return dto;
     }
 }

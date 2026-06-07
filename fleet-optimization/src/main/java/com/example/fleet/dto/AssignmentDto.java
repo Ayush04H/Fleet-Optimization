@@ -9,6 +9,7 @@ public class AssignmentDto {
     private RouteDto route;
     private LocalDate date;
     private String status;
+    private String delayReason;
 
     public AssignmentDto() {}
 
@@ -38,4 +39,7 @@ public class AssignmentDto {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getDelayReason() { return delayReason; }
+    public void setDelayReason(String delayReason) { this.delayReason = delayReason; }
 }

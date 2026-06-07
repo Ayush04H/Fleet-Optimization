@@ -32,17 +32,19 @@ public class Assignment {
 
     private LocalDate date;
 
-    private String status; // e.g., PENDING, COMPLETED
+    private String status;
+    private String delayReason;
 
     public Assignment() {}
 
-    public Assignment(Long id, User user, Vehicle vehicle, Route route, LocalDate date, String status) {
+    public Assignment(Long id, User user, Vehicle vehicle, Route route, LocalDate date, String status, String delayReason) {
         this.id = id;
         this.user = user;
         this.vehicle = vehicle;
         this.route = route;
         this.date = date;
         this.status = status;
+        this.delayReason = delayReason;
     }
 
     public Long getId() { return id; }
@@ -62,4 +64,7 @@ public class Assignment {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getDelayReason() { return delayReason; }
+    public void setDelayReason(String delayReason) { this.delayReason = delayReason; }
 }

@@ -5,14 +5,16 @@ public class RouteDto {
     private String startLocation;
     private String endLocation;
     private Double distanceKm;
+    private Double requiredCapacity;
 
     public RouteDto() {}
 
-    public RouteDto(Long id, String startLocation, String endLocation, Double distanceKm) {
+    public RouteDto(Long id, String startLocation, String endLocation, Double distanceKm, Double requiredCapacity) {
         this.id = id;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
         this.distanceKm = distanceKm;
+        this.requiredCapacity = requiredCapacity;
     }
 
     public Long getId() { return id; }
@@ -26,4 +28,7 @@ public class RouteDto {
 
     public Double getDistanceKm() { return distanceKm; }
     public void setDistanceKm(Double distanceKm) { this.distanceKm = distanceKm; }
+
+    public Double getRequiredCapacity() { return requiredCapacity; }
+    public void setRequiredCapacity(Double requiredCapacity) { this.requiredCapacity = requiredCapacity; }
 }

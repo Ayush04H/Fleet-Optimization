@@ -7,6 +7,9 @@ public class VehicleDto {
     private String status;
     private Double currentMileage;
     private Double maintenanceThreshold;
+    private Double baseCostPerKm;
+    private Double revenuePerKm;
+    private Double netProfit;
 
     public VehicleDto() {}
 
@@ -36,4 +39,13 @@ public class VehicleDto {
 
     public Double getMaintenanceThreshold() { return maintenanceThreshold; }
     public void setMaintenanceThreshold(Double maintenanceThreshold) { this.maintenanceThreshold = maintenanceThreshold; }
+
+    public Double getBaseCostPerKm() { return baseCostPerKm; }
+    public void setBaseCostPerKm(Double baseCostPerKm) { this.baseCostPerKm = baseCostPerKm; }
+
+    public Double getRevenuePerKm() { return revenuePerKm; }
+    public void setRevenuePerKm(Double revenuePerKm) { this.revenuePerKm = revenuePerKm; }
+
+    public Double getNetProfit() { return netProfit; }
+    public void setNetProfit(Double netProfit) { this.netProfit = netProfit; }
 }
