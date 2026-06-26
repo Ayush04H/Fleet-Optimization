@@ -60,7 +60,7 @@ const Assignments = () => {
       setDate('');
       fetchData(); // Refresh everything
     } catch (error) {
-      // Global error boundary Toast will catch the 400 constraint violation!
+      alert(error.response?.data?.message || error.message || 'Failed to dispatch assignment');
     }
   };
   
@@ -69,7 +69,7 @@ const Assignments = () => {
       await api.put(`/assignments/${id}/complete`);
       fetchData();
     } catch (error) {
-      console.error(error);
+      alert(error.response?.data?.message || error.message || 'Failed to complete route');
     }
   };
 

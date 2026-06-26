@@ -114,7 +114,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 
         // Free up the vehicle, increment mileage, and calculate profitability
         Vehicle vehicle = assignment.getVehicle();
-        Double distance = assignment.getRoute().getDistanceKm();
+        Double distance = (assignment.getRoute() != null && assignment.getRoute().getDistanceKm() != null) ? assignment.getRoute().getDistanceKm() : 10.0;
         Double currentMileage = vehicle.getCurrentMileage() != null ? vehicle.getCurrentMileage() : 0.0;
         
         // Profitability logic
@@ -130,9 +130,10 @@ public class AssignmentServiceImpl implements AssignmentService {
         Double newMileage = currentMileage + distance;
         vehicle.setCurrentMileage(newMileage);
 
+        Double threshold = vehicle.getMaintenanceThreshold() != null ? vehicle.getMaintenanceThreshold() : 5000.0;
         if (actualCostPerKm > revenue) {
             vehicle.setStatus("RETIREMENT_RECOMMENDED");
-        } else if (newMileage >= vehicle.getMaintenanceThreshold()) {
+        } else if (newMileage >= threshold) {
             vehicle.setStatus("MAINTENANCE_REQUIRED");
         } else {
             vehicle.setStatus("IDLE");
