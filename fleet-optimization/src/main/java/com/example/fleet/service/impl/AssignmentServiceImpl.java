@@ -46,8 +46,8 @@ public class AssignmentServiceImpl implements AssignmentService {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + request.getUserId()));
         
-        if (assignmentRepository.existsByUserIdAndDate(user.getId(), request.getDate())) {
-            throw new BusinessConstraintViolationException("Driver is already assigned to a route on this date.");
+        if (assignmentRepository.existsByUserIdAndDateAndStatus(user.getId(), request.getDate(), "ACTIVE")) {
+            throw new BusinessConstraintViolationException("Driver is currently en route on an active assignment.");
         }
         
         Vehicle vehicle = vehicleRepository.findById(request.getVehicleId())
@@ -56,11 +56,12 @@ public class AssignmentServiceImpl implements AssignmentService {
         Route route = routeRepository.findById(request.getRouteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Route not found with ID: " + request.getRouteId()));
 
-        if ("MAINTENANCE_REQUIRED".equals(vehicle.getStatus())) {
-            throw new BusinessConstraintViolationException("Vehicle requires maintenance and cannot be dispatched.");
+        String vStatus = vehicle.getStatus() != null ? vehicle.getStatus() : "IDLE";
+        if ("MAINTENANCE_REQUIRED".equals(vStatus) || "RETIREMENT_RECOMMENDED".equals(vStatus)) {
+            throw new BusinessConstraintViolationException("Vehicle requires maintenance/retirement and cannot be dispatched.");
         }
-        if (!"IDLE".equals(vehicle.getStatus())) {
-            throw new BusinessConstraintViolationException("Vehicle is not available. Current status: " + vehicle.getStatus());
+        if ("ACTIVE".equals(vStatus)) {
+            throw new BusinessConstraintViolationException("Vehicle is currently dispatched on an active route.");
         }
 
         if (route.getRequiredCapacity() != null && vehicle.getCapacity() != null) {

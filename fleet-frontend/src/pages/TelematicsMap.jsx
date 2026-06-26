@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import api from '../api/axiosConfig';
 import { geocodeCity } from '../api/geocoder';
 import './Dashboard.css'; // Reusing some base styles
+
+const AutoRecenterMap = ({ markers }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (markers && markers.length > 0) {
+      const coords = markers.map(m => m.currentCoords);
+      const bounds = L.latLngBounds(coords);
+      map.fitBounds(bounds, { padding: [60, 60], maxZoom: 12 });
+    }
+  }, [markers, map]);
+  return null;
+};
 
 // Fix Leaflet icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -82,6 +94,7 @@ const TelematicsMap = () => {
       
       <div className="card" style={{ padding: 0, flex: 1, overflow: 'hidden', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)' }}>
         <MapContainer center={[48.8566, 2.3522]} zoom={5} style={{ height: '100%', width: '100%', zIndex: 0 }}>
+          <AutoRecenterMap markers={mapMarkers} />
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

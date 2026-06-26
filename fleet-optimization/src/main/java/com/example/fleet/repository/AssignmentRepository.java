@@ -13,5 +13,6 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
     // Custom method to fetch assignments for a specific user/driver
     List<Assignment> findByUserId(Long userId);
     boolean existsByUserIdAndDate(Long userId, LocalDate date);
+    boolean existsByUserIdAndDateAndStatus(Long userId, LocalDate date, String status);
     List<Assignment> findByStatus(String status);
 }
