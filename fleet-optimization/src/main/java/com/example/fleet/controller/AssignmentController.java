@@ -24,7 +24,7 @@ public class AssignmentController {
         this.assignmentService = assignmentService;
     }
 
-    @PostMapping
+    @PostMapping({"", "/create"})
     public ResponseEntity<AssignmentDto> createAssignment(@RequestBody CreateAssignmentRequest request) {
         return ResponseEntity.ok(assignmentService.createAssignment(request));
     }

@@ -46,7 +46,7 @@ const Assignments = () => {
     if (!userId || !vehicleId || !routeId || !date) return;
     
     try {
-      await api.post('/assignments/create', {
+      await api.post('/assignments', {
         userId: parseInt(userId),
         vehicleId: parseInt(vehicleId),
         routeId: parseInt(routeId),
