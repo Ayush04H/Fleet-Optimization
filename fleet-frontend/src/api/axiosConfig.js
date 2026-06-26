@@ -20,8 +20,10 @@ export const apiEventBus = new EventBus();
 // Using axios from dependency, not mock
 import axiosLib from 'axios';
 
+const defaultApiUrl = import.meta.env.DEV ? 'http://localhost:8080/api' : 'https://fleet-optimization.onrender.com/api';
+
 const api = axiosLib.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api',
+  baseURL: import.meta.env.VITE_API_URL || defaultApiUrl,
   headers: {
     'Content-Type': 'application/json'
   }

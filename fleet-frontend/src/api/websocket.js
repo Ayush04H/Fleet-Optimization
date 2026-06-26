@@ -11,8 +11,10 @@ class WebSocketService {
   connect() {
     if (this.client && this.client.active) return;
 
+    const defaultWsUrl = import.meta.env.DEV ? 'http://localhost:8080/ws-fleet' : 'https://fleet-optimization.onrender.com/ws-fleet';
+
     this.client = new Client({
-      webSocketFactory: () => new SockJS(import.meta.env.VITE_WS_URL || 'http://localhost:8080/ws-fleet'),
+      webSocketFactory: () => new SockJS(import.meta.env.VITE_WS_URL || defaultWsUrl),
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000
