@@ -15,7 +15,15 @@ const Dashboard = () => {
       setVehicles(vehRes.data);
       
       const assRes = await api.get('/assignments').catch(() => ({ data: [] }));
-      setActiveAssignments(assRes.data.filter(a => a.status === 'ACTIVE'));
+      const active = assRes.data.filter(a => a.status === 'ACTIVE');
+      setActiveAssignments(active);
+      
+      setLiveEvents(prev => prev.length > 0 ? prev : assRes.data.slice(0, 8).map(a => ({
+        id: a.id,
+        status: a.status || 'ACTIVE',
+        timestamp: new Date(a.date || Date.now()),
+        delayReason: a.delayReason
+      })));
     } catch (error) {
       console.error("Failed to fetch dashboard data", error);
     }

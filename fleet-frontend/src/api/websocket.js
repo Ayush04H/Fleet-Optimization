@@ -23,15 +23,10 @@ class WebSocketService {
     this.client.onConnect = (frame) => {
       console.log('Connected to WebSockets', frame);
       
-      // Subscribe to alerts topic
-      this.client.subscribe('/topic/alerts', (message) => {
+      const handleWsMessage = (message) => {
         if (message.body) {
           const payload = JSON.parse(message.body);
-          
-          // Notify local subscribers (e.g. Dashboard feed)
           this.subscribers.forEach(sub => sub(payload));
-          
-          // Show global toast if it has a delay reason
           if (payload.delayReason) {
             apiEventBus.emit('api_error', { 
               title: 'CRITICAL ALERT', 
@@ -40,7 +35,11 @@ class WebSocketService {
             });
           }
         }
-      });
+      };
+
+      this.client.subscribe('/topic/alerts', handleWsMessage);
+      this.client.subscribe('/topic/assignments', handleWsMessage);
+      this.client.subscribe('/topic/vehicles', handleWsMessage);
     };
 
     this.client.onStompError = (frame) => {
