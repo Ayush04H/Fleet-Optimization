@@ -91,7 +91,7 @@ const Drivers = () => {
                   {drivers.map(d => (
                     <tr key={d.id}>
                       <td><strong>#{d.id}</strong></td>
-                      <td>{d.name}</td>
+                      <td>{d.name || d.username || 'Unnamed Driver'}</td>
                     </tr>
                   ))}
                   {drivers.length === 0 && (
