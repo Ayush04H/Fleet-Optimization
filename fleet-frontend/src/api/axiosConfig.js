@@ -1,4 +1,4 @@
-import axios from 'react';
+
 
 // Create a singleton event emitter since we can't easily access React Context outside components
 class EventBus {
