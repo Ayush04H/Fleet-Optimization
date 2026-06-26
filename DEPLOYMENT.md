@@ -41,18 +41,21 @@ This document contains the exact step-by-step instructions to deploy FleetOps to
 
 ---
 
-## Part 3: Frontend Setup (Vercel CDN)
+## Part 3: Frontend Setup (Vercel CDN - Foolproof Scratch Deploy)
+
+If your Vercel project is misconfigured or blank, delete it (Settings > Advanced > Delete) and recreate cleanly:
 
 1. Go to [https://vercel.com/](https://vercel.com/) and sign in with GitHub.
-2. Click **Add New... > Project** and import `Fleet-Management`.
-3. Configure Project Settings:
+2. Click **Add New... > Project** and import `Ayush04H/Fleet-Optimization`.
+3. **Configure Project Settings (CRITICAL MONOREPO STEP):**
    - **Project Name:** `fleet-optimization`
-   - **Framework Preset:** **Vite**
-   - **Root Directory:** Click Edit and select `fleet-frontend`.
+   - **Framework Preset:** `Vite`
+   - **Root Directory:** Click Edit -> select **`fleet-frontend`** -> click Continue.
 4. Open **Environment Variables** and add these two:
-   - `VITE_API_URL` = `https://fleet-optimization-backend.onrender.com/api`
-   - `VITE_WS_URL` = `https://fleet-optimization-backend.onrender.com/ws-fleet`
-5. Click **Deploy**. Vercel will bundle the optimized chunks (`vendor`, `maps`, `icons`) in seconds!
+   - `VITE_API_URL` = `https://fleet-optimization.onrender.com/api`
+   - `VITE_WS_URL` = `https://fleet-optimization.onrender.com/ws-fleet`
+   *(Note: Our Javascript code also hardwires these endpoints as smart fallbacks automatically!)*
+5. Click **Deploy**! Vercel will bundle the optimized chunks (`vendor`, `maps`, `icons`) in roughly 15 seconds.
 
 ---
 
